@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "lint:sonar": "eslint . --format json --output-file eslint-report.json",
+    "sonar": "sonar-scanner",
     "preview": "vite preview"
   },
   "dependencies": {
