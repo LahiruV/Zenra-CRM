@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { store } from './redux/store';
+import ProtectedRoute from './components/ProtectedRoute';
 import AppLayout from './layouts/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Leads from './pages/Leads';
@@ -11,6 +12,9 @@ import Contacts from './pages/Contacts';
 import AddContact from './pages/AddContact';
 import EditContact from './pages/EditContact';
 import Settings from './pages/Settings';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ForgotPassword from './pages/ForgotPassword';
 
 // Create a client for TanStack Query
 const queryClient = new QueryClient({
@@ -41,16 +45,54 @@ function App() {
             }}
           />
           <Routes>
-            <Route path="/" element={<AppLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="leads" element={<Leads />} />
+            {/* Public routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            
+            {/* Protected routes */}
+            <Route path="/" element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }>
+              <Route index element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="leads" element={
+                <ProtectedRoute>
+                  <Leads />
+                </ProtectedRoute>
+              } />
               <Route path="contacts">
-                <Route index element={<Contacts />} />
-                <Route path="add" element={<AddContact />} />
-                <Route path="edit/:id" element={<EditContact />} />
+                <Route index element={
+                  <ProtectedRoute>
+                    <Contacts />
+                  </ProtectedRoute>
+                } />
+                <Route path="add" element={
+                  <ProtectedRoute>
+                    <AddContact />
+                  </ProtectedRoute>
+                } />
+                <Route path="edit/:id" element={
+                  <ProtectedRoute>
+                    <EditContact />
+                  </ProtectedRoute>
+                } />
               </Route>
-              <Route path="settings" element={<Settings />} />
+              <Route path="settings" element={
+                <ProtectedRoute>
+                  <Settings />
+                </ProtectedRoute>
+              } />
             </Route>
           </Routes>
         </BrowserRouter>

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Lead, CreateLeadInput, UpdateLeadInput, LeadStats } from '../model/Lead';
-import { apiRequest, queryKeys } from './api';
+import { protectedApiRequest, queryKeys } from './api';
 
 /**
  * Lead service for API interactions
@@ -20,7 +20,10 @@ const ENDPOINTS = {
 export const useLeads = () => {
   return useQuery({
     queryKey: queryKeys.leads,
-    queryFn: () => apiRequest<Lead[]>(ENDPOINTS.leads),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<Lead[]>(ENDPOINTS.leads);
+      return response.data;
+    },
   });
 };
 
@@ -30,7 +33,10 @@ export const useLeads = () => {
 export const useLeadStats = () => {
   return useQuery({
     queryKey: queryKeys.leadStats,
-    queryFn: () => apiRequest<LeadStats>(ENDPOINTS.leadStats),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<LeadStats>(ENDPOINTS.leadStats);
+      return response.data;
+    },
   });
 };
 
@@ -40,7 +46,10 @@ export const useLeadStats = () => {
 export const useLead = (id: string) => {
   return useQuery({
     queryKey: queryKeys.lead(id),
-    queryFn: () => apiRequest<Lead>(ENDPOINTS.lead(id)),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<Lead>(ENDPOINTS.lead(id));
+      return response.data;
+    },
     enabled: !!id,
   });
 };
@@ -52,11 +61,10 @@ export const useCreateLead = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (data: CreateLeadInput) =>
-      apiRequest<Lead>(ENDPOINTS.leads, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: CreateLeadInput) => {
+      const response = await protectedApiRequest.post<Lead>(ENDPOINTS.leads, data);
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.leads });
       queryClient.invalidateQueries({ queryKey: queryKeys.leadStats });
@@ -71,11 +79,10 @@ export const useUpdateLead = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (data: UpdateLeadInput) =>
-      apiRequest<Lead>(ENDPOINTS.lead(data.id), {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: UpdateLeadInput) => {
+      const response = await protectedApiRequest.put<Lead>(ENDPOINTS.lead(data.id), data);
+      return response.data;
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.leads });
       queryClient.invalidateQueries({ queryKey: queryKeys.lead(data.id) });
@@ -91,8 +98,10 @@ export const useDeleteLead = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: string) =>
-      apiRequest(ENDPOINTS.lead(id), { method: 'DELETE' }),
+    mutationFn: async (id: string) => {
+      const response = await protectedApiRequest.delete(ENDPOINTS.lead(id));
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.leads });
       queryClient.invalidateQueries({ queryKey: queryKeys.leadStats });

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Contact, CreateContactInput, UpdateContactInput, ContactStats } from '../model/Contact';
-import { apiRequest, queryKeys } from './api';
+import { protectedApiRequest, queryKeys } from './api';
 
 /**
  * Contact service for API interactions
@@ -20,7 +20,10 @@ const ENDPOINTS = {
 export const useContacts = () => {
   return useQuery({
     queryKey: queryKeys.contacts,
-    queryFn: () => apiRequest<Contact[]>(ENDPOINTS.contacts),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<Contact[]>(ENDPOINTS.contacts);
+      return response.data;
+    },
   });
 };
 
@@ -30,7 +33,10 @@ export const useContacts = () => {
 export const useContactStats = () => {
   return useQuery({
     queryKey: queryKeys.contactStats,
-    queryFn: () => apiRequest<ContactStats>(ENDPOINTS.contactStats),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<ContactStats>(ENDPOINTS.contactStats);
+      return response.data;
+    },
   });
 };
 
@@ -40,7 +46,10 @@ export const useContactStats = () => {
 export const useContact = (id: string) => {
   return useQuery({
     queryKey: queryKeys.contact(id),
-    queryFn: () => apiRequest<Contact>(ENDPOINTS.contact(id)),
+    queryFn: async () => {
+      const response = await protectedApiRequest.get<Contact>(ENDPOINTS.contact(id));
+      return response.data;
+    },
     enabled: !!id,
   });
 };
@@ -52,11 +61,10 @@ export const useCreateContact = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (data: CreateContactInput) =>
-      apiRequest<Contact>(ENDPOINTS.contacts, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: CreateContactInput) => {
+      const response = await protectedApiRequest.post<Contact>(ENDPOINTS.contacts, data);
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.contacts });
       queryClient.invalidateQueries({ queryKey: queryKeys.contactStats });
@@ -71,11 +79,10 @@ export const useUpdateContact = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (data: UpdateContactInput) =>
-      apiRequest<Contact>(ENDPOINTS.contact(data.id), {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: UpdateContactInput) => {
+      const response = await protectedApiRequest.put<Contact>(ENDPOINTS.contact(data.id), data);
+      return response.data;
+    },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.contacts });
       queryClient.invalidateQueries({ queryKey: queryKeys.contact(data.id) });
@@ -91,8 +98,10 @@ export const useDeleteContact = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: (id: string) =>
-      apiRequest(ENDPOINTS.contact(id), { method: 'DELETE' }),
+    mutationFn: async (id: string) => {
+      const response = await protectedApiRequest.delete(ENDPOINTS.contact(id));
+      return response.data;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.contacts });
       queryClient.invalidateQueries({ queryKey: queryKeys.contactStats });

@@ -9,14 +9,8 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@company.com',
-    role: 'Sales Manager',
-    avatar: null,
-  }, // Mock user for demo purposes
-  isAuthenticated: true,
+  user: null,
+  isAuthenticated: false,
   loading: false,
   error: null,
 };

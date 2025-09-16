@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Users, Phone, Mail, Building, Edit, Trash2, Plus, MoreHorizontal } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, Button, DataTable, Badge, Dropdown } from '../widgets';
-import Breadcrumb from '../components/Breadcrumb';
 import { type ContactFormData } from '../schemas/contactSchema';
 
 interface Contact {
@@ -305,13 +304,6 @@ const Contacts: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb 
-        items={[
-          { label: 'Contacts', current: true }
-        ]} 
-      />
-      
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold text-gray-900">Contacts Management</h1>
         <Button onClick={() => navigate('/contacts/add')}>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
+import BreadcrumbArea from '../components/BreadcrumbArea';
 
 /**
  * Main application layout component
@@ -15,17 +16,20 @@ const AppLayout: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Sidebar */}
       <Sidebar open={sidebarOpen} onToggle={toggleSidebar} />
       
       {/* Main content area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top navigation bar */}
         <Topbar onMenuClick={toggleSidebar} />
         
+        {/* Breadcrumb area - fixed, non-scrollable */}
+        <BreadcrumbArea />
+        
         {/* Page content using Outlet */}
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 px-6 py-6 overflow-auto bg-gray-50">
           <Outlet />
         </main>
       </div>

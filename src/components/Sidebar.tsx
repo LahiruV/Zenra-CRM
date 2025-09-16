@@ -36,13 +36,13 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
     <>
       {/* Desktop Sidebar */}
       <div className={`
-        hidden md:flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out
+        hidden md:flex flex-col bg-white border-r border-gray-200 transition-all duration-300 ease-in-out flex-shrink-0
         ${open ? 'w-64' : 'w-16'}
       `}>
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
           {open && (
-            <h1 className="text-xl font-bold text-gray-800">CRM System</h1>
+            <h1 className="text-base font-semibold text-gray-800">CRM System</h1>
           )}
           <button
             onClick={onToggle}
@@ -53,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 overflow-y-auto">
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
@@ -88,10 +88,10 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
       {open && (
         <div className="md:hidden fixed inset-0 z-50 flex">
           <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onToggle} />
-          <div className="relative flex flex-col w-64 bg-white border-r border-gray-200">
+          <div className="relative flex flex-col w-64 bg-white border-r border-gray-200 h-full">
             {/* Mobile Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
-              <h1 className="text-xl font-bold text-gray-800">CRM System</h1>
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
+              <h1 className="text-base font-semibold text-gray-800">CRM System</h1>
               <button
                 onClick={onToggle}
                 className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
@@ -101,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
             </div>
 
             {/* Mobile Navigation */}
-            <nav className="flex-1 p-4">
+            <nav className="flex-1 p-4 overflow-y-auto">
               <ul className="space-y-2">
                 {menuItems.map((item) => {
                   const Icon = item.icon;

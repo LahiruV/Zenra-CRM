@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { User, Mail, Phone, Building, MapPin, Tag, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, Button, Input, TextArea, Select } from '../widgets';
-import Breadcrumb from '../components/Breadcrumb';
 import { contactSchema, type ContactFormData } from '../schemas/contactSchema';
 
 /**
@@ -160,14 +159,6 @@ const AddContact: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb 
-        items={[
-          { label: 'Contacts', path: '/contacts' },
-          { label: 'Add Contact', current: true }
-        ]} 
-      />
-      
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

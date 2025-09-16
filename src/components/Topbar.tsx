@@ -1,8 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Menu, Search, User, Settings, LogOut, ChevronDown } from 'lucide-react';
 import { RootState } from '../redux/store';
+import { logout } from '../redux/slices/authSlice';
+import { authService } from '../functions/authService';
 
 interface TopbarProps {
   onMenuClick: () => void;
@@ -14,12 +16,21 @@ interface TopbarProps {
 const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log('Logout clicked');
+  const handleLogout = async () => {
     setDropdownOpen(false);
+    
+    try {
+      await authService.logout();
+      dispatch(logout());
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force logout even if API call fails
+      dispatch(logout());
+      navigate('/login');
+    }
   };
 
   const handleSettings = () => {
@@ -28,7 +39,7 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-white border-b border-gray-200 px-6 py-2 flex-shrink-0">
       <div className="flex items-center justify-between">
         {/* Mobile menu button */}
         <button
@@ -39,24 +50,15 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick }) => {
         </button>
 
         {/* App title - hidden on mobile */}
-        <h1 className="hidden sm:block text-xl font-semibold text-gray-800">
-          Corporate CRM
+        <h1 className="hidden sm:block text-base font-semibold text-gray-800">
+          CRM Dashboard
         </h1>
 
-        {/* Search bar */}
-        <div className="flex-1 max-w-md mx-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search customers, leads..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
-            />
-          </div>
-        </div>
+        {/* Spacer */}
+        <div className="flex-1"></div>
 
         {/* User info */}
-        <div className="relative">
+        <div className="relative flex-shrink-0">
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"

@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { User, Mail, Phone, Building, MapPin, Tag, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import { Card, Button, Input, TextArea, Select } from '../widgets';
-import Breadcrumb from '../components/Breadcrumb';
 import { contactSchema, type ContactFormData } from '../schemas/contactSchema';
 
 // Mock contact data - in real app, this would come from API/database
@@ -255,13 +254,6 @@ const EditContact: React.FC = () => {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <Breadcrumb 
-          items={[
-            { label: 'Contacts', path: '/contacts' },
-            { label: 'Edit Contact', current: true }
-          ]} 
-        />
-        
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Loading Contact...</h1>
@@ -284,14 +276,6 @@ const EditContact: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      {/* Breadcrumb */}
-      <Breadcrumb 
-        items={[
-          { label: 'Contacts', path: '/contacts' },
-          { label: 'Edit Contact', current: true }
-        ]} 
-      />
-      
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

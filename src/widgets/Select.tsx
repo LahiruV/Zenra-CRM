@@ -89,7 +89,7 @@ const Select: React.FC<SelectProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
-              <div className="max-h-48 overflow-y-auto">
+              <div className="max-h-48 overflow-y-auto py-1">
                 {filteredOptions.length > 0 ? (
                   filteredOptions.map((option) => (
                     <button
@@ -97,7 +97,7 @@ const Select: React.FC<SelectProps> = ({
                       onClick={() => handleSelect(option.value)}
                       disabled={option.disabled}
                       className={`
-                        w-full flex items-center justify-between px-3 py-2 text-left transition-colors
+                        w-full flex items-center justify-between px-3 py-2.5 text-left transition-colors
                         ${option.disabled 
                           ? 'text-gray-400 cursor-not-allowed' 
                           : 'text-gray-900 hover:bg-gray-50'
@@ -113,10 +113,12 @@ const Select: React.FC<SelectProps> = ({
                     </button>
                   ))
                 ) : (
-                  <div className="px-3 py-2 text-gray-500 text-center">
+                  <div className="px-3 py-2.5 text-gray-500 text-center">
                     No options found
                   </div>
                 )}
+                {/* Extra bottom spacing to ensure last option is fully visible */}
+                <div className="h-2"></div>
               </div>
             </div>
           </>
