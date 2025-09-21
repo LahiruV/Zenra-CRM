@@ -4,6 +4,12 @@ import {
   LayoutDashboard, 
   TrendingUp, 
   Users, 
+  Building,
+  CheckSquare,
+  Target,
+  HeadphonesIcon,
+  BarChart3,
+  Calendar,
   Settings,
   Menu,
   X
@@ -25,6 +31,12 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onToggle }) => {
     { text: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { text: 'Leads', icon: TrendingUp, path: '/leads' },
     { text: 'Contacts', icon: Users, path: '/contacts' },
+    { text: 'Accounts', icon: Building, path: '/accounts' },
+    { text: 'Tasks', icon: CheckSquare, path: '/tasks' },
+    { text: 'Deals', icon: Target, path: '/deals' },
+    { text: 'Support', icon: HeadphonesIcon, path: '/support' },
+    { text: 'Scheduler', icon: Calendar, path: '/calendar' },
+    { text: 'Analytics', icon: BarChart3, path: '/analytics' },
     { text: 'Settings', icon: Settings, path: '/settings' },
   ];
 

@@ -8,16 +8,23 @@ export interface Contact {
   lastName: string;
   email: string;
   phone?: string;
-  company?: string;
+  companyId?: string;
+  companyName?: string;
   position?: string;
   department?: string;
   address?: Address;
   notes?: string;
   tags?: string[];
-  isActive: boolean;
+  status: 'Active' | 'Inactive' | 'Pending';
+  type: 'Customer' | 'Lead' | 'Prospect' | 'Partner';
+  assignedToId?: string;
+  assignedToName?: string;
+  leadScore?: number;
+  lastActivityDate?: Date;
   createdAt: Date;
   updatedAt: Date;
-  lastContactDate?: Date;
+  createdById: string;
+  createdByName: string;
 }
 
 /**
@@ -39,12 +46,14 @@ export interface CreateContactInput {
   lastName: string;
   email: string;
   phone?: string;
-  company?: string;
+  companyId?: string;
   position?: string;
   department?: string;
   address?: Address;
   notes?: string;
   tags?: string[];
+  type: Contact['type'];
+  assignedToId?: string;
 }
 
 /**
@@ -52,8 +61,9 @@ export interface CreateContactInput {
  */
 export interface UpdateContactInput extends Partial<CreateContactInput> {
   id: string;
-  isActive?: boolean;
-  lastContactDate?: Date;
+  status?: Contact['status'];
+  lastActivityDate?: Date;
+  leadScore?: number;
 }
 
 /**
@@ -62,6 +72,10 @@ export interface UpdateContactInput extends Partial<CreateContactInput> {
 export interface ContactStats {
   total: number;
   active: number;
+  customers: number;
+  leads: number;
+  prospects: number;
   companies: number;
   recentlyAdded: number;
+  highValue: number;
 }

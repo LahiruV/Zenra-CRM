@@ -8,15 +8,23 @@ export interface Lead {
   contactName: string;
   email: string;
   phone?: string;
-  status: 'Hot' | 'Warm' | 'Cold' | 'Qualified' | 'Converted' | 'Lost';
+  status: 'New' | 'Contacted' | 'Qualified' | 'Proposal' | 'Negotiation' | 'Closed Won' | 'Closed Lost';
   source: string;
   estimatedValue: number;
-  assignedTo?: string;
+  assignedToId?: string;
+  assignedToName?: string;
+  priority: 'Low' | 'Medium' | 'High' | 'Urgent';
+  expectedCloseDate?: Date;
+  lastActivityDate?: Date;
+  nextFollowUpDate?: Date;
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
-  lastContactDate?: Date;
-  nextFollowUpDate?: Date;
+  createdById: string;
+  createdByName: string;
+  tags?: string[];
+  companyId?: string;
+  contactId?: string;
 }
 
 /**
@@ -29,7 +37,11 @@ export interface CreateLeadInput {
   phone?: string;
   source: string;
   estimatedValue: number;
+  priority: Lead['priority'];
+  expectedCloseDate?: Date;
+  assignedToId?: string;
   notes?: string;
+  tags?: string[];
 }
 
 /**
@@ -38,9 +50,31 @@ export interface CreateLeadInput {
 export interface UpdateLeadInput extends Partial<CreateLeadInput> {
   id: string;
   status?: Lead['status'];
-  assignedTo?: string;
-  lastContactDate?: Date;
+  assignedToId?: string;
+  lastActivityDate?: Date;
   nextFollowUpDate?: Date;
+}
+
+/**
+ * Lead pipeline stage interface
+ */
+export interface LeadPipelineStage {
+  id: string;
+  name: string;
+  order: number;
+  color: string;
+  description?: string;
+}
+
+/**
+ * User interface for assignments
+ */
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
 }
 
 /**
@@ -48,9 +82,14 @@ export interface UpdateLeadInput extends Partial<CreateLeadInput> {
  */
 export interface LeadStats {
   total: number;
-  hot: number;
-  warm: number;
-  cold: number;
-  converted: number;
+  new: number;
+  contacted: number;
+  qualified: number;
+  proposal: number;
+  negotiation: number;
+  closedWon: number;
+  closedLost: number;
   conversionRate: number;
+  averageDealSize: number;
+  totalValue: number;
 }

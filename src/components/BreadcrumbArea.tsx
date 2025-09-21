@@ -32,7 +32,43 @@ const BreadcrumbArea: React.FC = () => {
         items[0].current = true;
       }
     } else if (segments[0] === 'leads') {
-      items.push({ label: 'Leads', current: true });
+      items.push({ label: 'Leads', path: '/leads' });
+      
+      if (segments[1] === 'add') {
+        items.push({ label: 'Add Lead', current: true });
+      } else if (segments[1] === 'edit' && segments[2]) {
+        items.push({ label: 'Edit Lead', current: true });
+      } else if (segments.length === 1) {
+        items[0].current = true;
+      }
+    } else if (segments[0] === 'accounts') {
+      items.push({ label: 'Accounts', path: '/accounts' });
+      
+      if (segments[1] === 'add') {
+        items.push({ label: 'Add Account', current: true });
+      } else if (segments[1] === 'edit' && segments[2]) {
+        items.push({ label: 'Edit Account', current: true });
+      } else if (segments.length === 1) {
+        items[0].current = true;
+      }
+    } else if (segments[0] === 'tasks') {
+      items.push({ label: 'Tasks', path: '/tasks' });
+      
+      if (segments[1] === 'add') {
+        items.push({ label: 'Add Task', current: true });
+      } else if (segments[1] === 'edit' && segments[2]) {
+        items.push({ label: 'Edit Task', current: true });
+      } else if (segments.length === 1) {
+        items[0].current = true;
+      }
+    } else if (segments[0] === 'deals') {
+      items.push({ label: 'Deals', current: true });
+    } else if (segments[0] === 'support') {
+      items.push({ label: 'Support', current: true });
+    } else if (segments[0] === 'analytics') {
+      items.push({ label: 'Analytics', current: true });
+    } else if (segments[0] === 'calendar') {
+      items.push({ label: 'Scheduler', current: true });
     } else if (segments[0] === 'settings') {
       items.push({ label: 'Settings', current: true });
     } else {

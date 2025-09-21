@@ -138,14 +138,37 @@ export const leadSchema = z.object({
     .min(0, 'Estimated value must be a positive number')
     .max(10000000, 'Estimated value must be less than $10,000,000'),
 
-  status: z
-    .enum(['Hot', 'Warm', 'Cold', 'Qualified', 'Converted', 'Lost'], {
-      errorMap: () => ({ message: 'Please select a valid status' })
+  priority: z
+    .enum(['Low', 'Medium', 'High', 'Urgent'], {
+      errorMap: () => ({ message: 'Please select a valid priority' })
     }),
+
+  expectedCloseDate: z
+    .string()
+    .optional()
+    .refine((val) => {
+      if (!val || val.trim() === '') return true;
+      const date = new Date(val);
+      return !isNaN(date.getTime()) && date > new Date();
+    }, 'Expected close date must be in the future'),
+
+  assignedToId: z
+    .string()
+    .optional(),
+
+  status: z
+    .enum(['New', 'Contacted', 'Qualified', 'Proposal', 'Negotiation', 'Closed Won', 'Closed Lost'], {
+      errorMap: () => ({ message: 'Please select a valid status' })
+    })
+    .optional(),
 
   notes: z
     .string()
     .max(1000, 'Notes must be less than 1000 characters')
+    .optional(),
+
+  tags: z
+    .array(z.string())
     .optional(),
 });
 
